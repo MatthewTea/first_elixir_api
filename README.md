@@ -51,5 +51,10 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
         ix. --binary-id (choose binary id over integer id for the database)
         
    4) mix deps.get - remember to get the dependencies after generating the app   4) mix deps.get - remember to get the dependencies after generating the app  4) mix deps.get - remember to get the dependencies after generating the app   4) mix deps.get - remember to get the dependencies after generating the app
+
+
+   to be able to compile a dependency Bcrypt, should start the terminal with below command:
+
+cmd /K "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat" amd64
         
 

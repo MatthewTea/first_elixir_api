@@ -8,5 +8,6 @@ defmodule MatthewApiWeb.Router do
   scope "/api", MatthewApiWeb do
     pipe_through :api
     get "/", DefaultController, :index
+    post "/accounts/create", AccountController, :create
   end
 end

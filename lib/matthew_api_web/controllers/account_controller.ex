@@ -1,8 +1,7 @@
 defmodule MatthewApiWeb.AccountController do
   use MatthewApiWeb, :controller
-
-  alias MatthewApi.Accounts
-  alias MatthewApi.Accounts.Account
+  alias MatthewApiWeb.Auth.Guardian
+  alias MatthewApi.{Accounts, Accounts.Account, Users.User, Users}
 
   action_fallback MatthewApiWeb.FallbackController
 
@@ -12,10 +11,12 @@ defmodule MatthewApiWeb.AccountController do
   end
 
   def create(conn, %{"account" => account_params}) do
-    with {:ok, %Account{} = account} <- Accounts.create_account(account_params) do
+    with {:ok, %Account{} = account} <- Accounts.create_account(account_params),
+         {:ok, token, _claims} <- Guardian.encode_and_sign(account),
+         {:ok, %User{} = _user} <- Users.create_user(account, account_params) do
       conn
       |> put_status(:created)
-      |> render(:show, account: account)
+      |> render(:show, %{account: account, token: token})
     end
   end
 

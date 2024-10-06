@@ -1,6 +1,6 @@
 defmodule MatthewApiWeb.AccountController do
   use MatthewApiWeb, :controller
-  alias MatthewApiWeb.Auth.Guardian
+  alias MatthewApiWeb.Auth.{Guardian, ErrorResponse}
   alias MatthewApi.{Accounts, Accounts.Account, Users.User, Users}
 
   action_fallback MatthewApiWeb.FallbackController
@@ -16,7 +16,19 @@ defmodule MatthewApiWeb.AccountController do
          {:ok, %User{} = _user} <- Users.create_user(account, account_params) do
       conn
       |> put_status(:created)
-      |> render(:show, %{account: account, token: token})
+      |> render(:show_with_token, %{account: account, token: token})
+    end
+  end
+
+  def sign_in(conn, %{"email" => email, "hashed_password" => hashed_password}) do
+    case Guardian.authenticate(email, hashed_password) do
+      {:ok, account, token} ->
+        conn
+        |> put_status(:ok)
+        |> render(:show_with_token, %{account: account, token: token})
+
+      {:error, :unauthorized} ->
+        raise ErrorResponse.Unauthorized, message: "Email or password incorrect."
     end
   end
 

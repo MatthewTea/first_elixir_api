@@ -22,4 +22,12 @@ defmodule MatthewApiWeb.AccountJSON do
       hash_password: account.hash_password
     }
   end
+
+  def show_with_token(%{account: account, token: token}) do
+    %{
+      id: account.id,
+      email: account.email,
+      token: token
+    }
+  end
 end

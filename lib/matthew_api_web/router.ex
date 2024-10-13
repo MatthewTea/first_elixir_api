@@ -12,10 +12,12 @@ defmodule MatthewApiWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :fetch_session
   end
 
   pipeline :auth do
     plug MatthewApiWeb.Auth.Pipeline
+    plug MatthewApiWeb.Auth.SetAccount
   end
 
   scope "/api", MatthewApiWeb do

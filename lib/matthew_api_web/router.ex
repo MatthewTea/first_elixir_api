@@ -30,5 +30,6 @@ defmodule MatthewApiWeb.Router do
   scope "/api", MatthewApiWeb do
     pipe_through [:api, :auth]
     get "/accounts/by_id/:id", AccountController, :show
+    post "/accounts/update", AccountController, :update
   end
 end

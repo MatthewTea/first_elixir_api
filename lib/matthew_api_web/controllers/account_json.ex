@@ -1,4 +1,5 @@
 defmodule MatthewApiWeb.AccountJSON do
+  alias MatthewApiWeb.UserJSON
   alias MatthewApi.Accounts.Account
 
   @doc """
@@ -28,6 +29,15 @@ defmodule MatthewApiWeb.AccountJSON do
       id: account.id,
       email: account.email,
       token: token
+    }
+  end
+
+  def show_full_account(%{account: account}) do
+    %{
+      id: account.id,
+      email: account.email,
+      hash_password: account.hash_password,
+      user: UserJSON.data(account.user)
     }
   end
 end

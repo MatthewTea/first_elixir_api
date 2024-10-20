@@ -2,21 +2,11 @@ defmodule MatthewApiWeb.AccountController do
   use MatthewApiWeb, :controller
   alias MatthewApiWeb.Auth.{Guardian, ErrorResponse}
   alias MatthewApi.{Accounts, Accounts.Account, Users.User, Users}
+  import MatthewApiWeb.Auth.AuthorizedPlug
 
-  plug :is_authorized_account when action in [:update, :delete]
+  plug :is_authorized when action in [:update, :delete]
 
   action_fallback MatthewApiWeb.FallbackController
-
-  defp is_authorized_account(conn, _opts) do
-    %{params: %{"account" => params}} = conn
-    account = Accounts.get_account!(params["id"])
-
-    if conn.assigns.account.id == account.id do
-      conn
-    else
-      raise ErrorResponse.Forbidden
-    end
-  end
 
   def index(conn, _params) do
     accounts = Accounts.list_accounts()
